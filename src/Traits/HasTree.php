@@ -11,9 +11,9 @@ use Illuminate\Support\Collection as BaseCollection;
 trait HasTree
 {
     protected string $parentColumn = 'parent_id';
-    
+
     protected string $childrenRelation = 'children';
-    
+
     protected string $parentRelation = 'parent';
 
     public function initializeHasTree(): void
@@ -97,12 +97,14 @@ trait HasTree
         }
 
         $node = static::find($descendant);
+
         return $node ? $node->ancestors()->contains($this->getKeyName(), $this->getKey()) : false;
     }
 
     public function isDescendantOf($ancestor): bool
     {
         $ancestorInstance = $ancestor instanceof self ? $ancestor : static::find($ancestor);
+
         return $ancestorInstance ? $ancestorInstance->isAncestorOf($this) : false;
     }
 
@@ -125,6 +127,7 @@ trait HasTree
     public function getPath(string $separator = ' / ', string $field = 'name'): string
     {
         $path = $this->ancestors()->reverse()->pluck($field)->push($this->getAttribute($field));
+
         return $path->implode($separator);
     }
 
@@ -159,7 +162,7 @@ trait HasTree
                 $query->from($table . ' as ancestors')
                     ->selectRaw('count(*)')
                     ->whereColumn('ancestors.' . $key, $table . '.' . $parentColumn);
-            }
+            },
         ]);
 
         return $query;
@@ -168,13 +171,13 @@ trait HasTree
     public static function tree(): Collection
     {
         $items = static::with('children')->get();
-        
+
         return static::buildTree($items);
     }
 
     public static function buildTree(Collection $items, $parentId = null): Collection
     {
-        $tree = new Collection();
+        $tree = new Collection;
         $parentColumn = (new static)->getParentColumn();
 
         foreach ($items as $item) {
@@ -193,6 +196,7 @@ trait HasTree
     public static function flatTree(): BaseCollection
     {
         $tree = static::tree();
+
         return static::flattenTree($tree);
     }
 
@@ -225,12 +229,14 @@ trait HasTree
         }
 
         $this->setAttribute($this->getParentColumn(), $parentId);
+
         return $this->save();
     }
 
     public function makeRoot(): bool
     {
         $this->setAttribute($this->getParentColumn(), null);
+
         return $this->save();
     }
 

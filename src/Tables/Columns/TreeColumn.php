@@ -2,22 +2,21 @@
 
 namespace StringKe\FilamentTree\Tables\Columns;
 
-use Closure;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 
 class TreeColumn extends TextColumn
 {
     protected bool $showIndent = true;
-    
+
     protected int $indentSize = 20;
-    
+
     protected string $expandIcon = 'heroicon-m-chevron-right';
-    
+
     protected string $collapseIcon = 'heroicon-m-chevron-down';
-    
+
     protected string $leafIcon = 'heroicon-m-minus';
-    
+
     protected bool $showIcon = true;
 
     protected function setUp(): void
@@ -30,36 +29,42 @@ class TreeColumn extends TextColumn
     public function showIndent(bool $show = true): static
     {
         $this->showIndent = $show;
+
         return $this;
     }
 
     public function indentSize(int $size): static
     {
         $this->indentSize = $size;
+
         return $this;
     }
 
     public function expandIcon(string $icon): static
     {
         $this->expandIcon = $icon;
+
         return $this;
     }
 
     public function collapseIcon(string $icon): static
     {
         $this->collapseIcon = $icon;
+
         return $this;
     }
 
     public function leafIcon(string $icon): static
     {
         $this->leafIcon = $icon;
+
         return $this;
     }
 
     public function showIcon(bool $show = true): static
     {
         $this->showIcon = $show;
+
         return $this;
     }
 

@@ -4,24 +4,23 @@ namespace StringKe\FilamentTree\Forms\Components;
 
 use Closure;
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class TreeSelect extends Select
 {
     protected bool $showTree = true;
-    
+
     protected int $indentSize = 20;
-    
+
     protected string $indentCharacter = '└─';
-    
+
     protected ?int $maxDepth = null;
-    
+
     protected bool $showPath = false;
-    
+
     protected string $pathSeparator = ' / ';
-    
+
     protected string $pathField = 'name';
 
     protected function setUp(): void
@@ -42,51 +41,58 @@ class TreeSelect extends Select
     public function showTree(bool $show = true): static
     {
         $this->showTree = $show;
+
         return $this;
     }
 
     public function indentSize(int $size): static
     {
         $this->indentSize = $size;
+
         return $this;
     }
 
     public function indentCharacter(string $character): static
     {
         $this->indentCharacter = $character;
+
         return $this;
     }
 
     public function maxDepth(?int $depth): static
     {
         $this->maxDepth = $depth;
+
         return $this;
     }
 
     public function showPath(bool $show = true): static
     {
         $this->showPath = $show;
+
         return $this;
     }
 
     public function pathSeparator(string $separator): static
     {
         $this->pathSeparator = $separator;
+
         return $this;
     }
 
     public function pathField(string $field): static
     {
         $this->pathField = $field;
+
         return $this;
     }
 
-    public function relationship(string|Closure $name, string|Closure $titleAttribute, ?Closure $modifyQueryUsing = null): static
+    public function relationship(string | Closure $name, string | Closure $titleAttribute, ?Closure $modifyQueryUsing = null): static
     {
         parent::relationship($name, $titleAttribute, $modifyQueryUsing);
 
-        if (!$this->hasOptionsList()) {
-            $this->options(function () use ($titleAttribute) {
+        if (! $this->hasOptionsList()) {
+            $this->options(function () {
                 return $this->getTreeOptions();
             });
         }
@@ -98,7 +104,7 @@ class TreeSelect extends Select
     {
         $relationship = $this->getRelationship();
 
-        if (!$relationship) {
+        if (! $relationship) {
             return [];
         }
 
@@ -110,7 +116,7 @@ class TreeSelect extends Select
         }
 
         $items = $query->get();
-        
+
         if (method_exists($relationship->getRelated(), 'buildTree')) {
             $tree = $relationship->getRelated()::buildTree($items);
         } else {
@@ -122,7 +128,7 @@ class TreeSelect extends Select
 
     protected function buildTree(Collection $items, $parentId = null): Collection
     {
-        $tree = new Collection();
+        $tree = new Collection;
 
         foreach ($items as $item) {
             if ($item->parent_id == $parentId) {
@@ -179,7 +185,7 @@ class TreeSelect extends Select
     {
         $relationship = $this->getRelationship();
 
-        if (!$relationship) {
+        if (! $relationship) {
             return [];
         }
 
